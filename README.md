@@ -92,7 +92,7 @@ rather than script arguments for most changes.
 
 ```bash
 # 1. Discover patches and create the reproducible train/val/test split
-#    (patch IDs saved to .../outputs/splits/{train,val,test}.txt)
+#    (patch IDs saved to outputs/splits/{train,val,test}.txt)
 python -m src.data_loading --config configs/config.yaml
 
 # 2. Exploratory data analysis: dataset summary, class distribution,
@@ -100,7 +100,7 @@ python -m src.data_loading --config configs/config.yaml
 python -m src.eda --config configs/config.yaml
 
 # 3. Train the Random Forest or XGBoost baseline (saves model + normalization
-#    stats + feature importances to .../outputs/models & .../outputs/metrics)
+#    stats + feature importances to outputs/models & outputs/metrics)
 python -m src.train --config configs/config.yaml
 
 # 4. Evaluate on validation and test splits (saves metrics JSON,
@@ -113,7 +113,7 @@ Or run everything interactively, with inline plots, from
 
 ### Reproducing the split
 
-`.../outputs/splits/{train,val,test}.txt` (one patch ID per line) are the
+`outputs/splits/{train,val,test}.txt` (one patch ID per line) are the
 artifact of record for the split — re-running `src.data_loading` with
 the same `configs/config.yaml` (`split.seed`) regenerates the identical
 split from any copy of the dataset. Downstream scripts (`train.py`,
@@ -176,7 +176,7 @@ etc.). Headline items:
   merging would help.
 - This repo include a saved model file (see next section) —
   results in `report.md` and `outputs/` can be reproduced by running the
-  pipeline against the actual PASTIS data placed under `data/PASTIS/`,
+  pipeline against the actual PASTIS data placed under `root_dir` mentioned in `config.yaml`,
   which is not distributed with this repository.
 
 ## 8. Saved model / reproducing results
