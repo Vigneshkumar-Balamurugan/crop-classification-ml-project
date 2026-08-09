@@ -1,0 +1,84 @@
+# Configuration for crop-type classification pipeline (PASTIS dataset)
+# Edit paths/hyperparameters here; everything in src/ folder reads from this file.
+
+data:
+  root_dir: "H:/Job/solafune/Agri-Assignment_01/Agri-Assignment_01/PASTIS_subset"          # root folder containing DATA_S2/, ANNOTATIONS/, metadata.geojson
+  s2_dir: "DATA_S2"                 # sub-folder with S2_<patch_id>.npy 
+  ann_dir: "ANNOTATIONS"            # sub-folder with TARGET_<patch_id>.npy
+  metadata_file: "metadata.geojson" # per-patch temporal / geographic metadata
+  num_classes: 20                   # crop types or other land-cover categories defined in the PASTIS label scheme [0..19 inclusive (19 = void label)]
+  void_label: 19                    # Void label class 
+  background_label: 0               # Background label class
+  class_names:                      # As per defined in the PASTIS label scheme
+    0: "Background"
+    1: "Meadow"
+    2: "Soft winter wheat"
+    3: "Corn"
+    4: "Winter barley"
+    5: "Winter rapeseed"
+    6: "Spring barley"
+    7: "Sunflower"
+    8: "Grapevine"
+    9: "Beet"
+    10: "Winter triticale"
+    11: "Winter durum wheat"
+    12: "Fruits, vegetables, flowers"
+    13: "Potatoes"
+    14: "Leguminous fodder"
+    15: "Soybeans"
+    16: "Orchard"
+    17: "Mixed cereal"
+    18: "Sorghum"
+    19: "Void label"
+
+sampling:
+  # If the full dataset is too large, cap the number of patches used. 
+  # Set to null to use all available patches (for our case, the dataset is small).
+  max_patches: null
+  seed: 42
+
+split:
+  train_ratio: 0.70
+  val_ratio: 0.15
+  test_ratio: 0.15
+  seed: 42
+  splits_dir: "H:/Job/solafune/crop-classification-project/project-root/outputs/splits"
+
+preprocessing:
+  # Per-pixel temporal aggregation statistics computed across the
+  # observation (time) axis for every band. This collapses the
+  # (T, C, H, W) cube into a fixed-size (C * n_stats, H, W) feature
+  # stack, which is what makes a simple per-pixel classifier possible
+  # despite each patch having a different number of observations T.
+  temporal_stats: ["mean", "std", "min", "max"]
+  normalize: true
+  clip_percentile: [1, 99]   # robust min/max clipping before normalization
+  pixel_sample_fraction: 0.15  # fraction of pixels per patch used for ML training
+  exclude_void_label: true
+  exclude_background_from_training: false  # keep background as a real class by default
+
+model:
+  type: "xgboost"   # "random_forest" or "xgboost"
+  
+  random_forest:
+    n_estimators: 300
+    max_depth: 25
+    min_samples_leaf: 2
+    n_jobs: -1
+    random_state: 42
+    class_weight: "balanced_subsample"
+
+  xgboost:
+    n_estimators: 300
+    max_depth: 10
+    learning_rate: 0.05
+    subsample: 0.8
+    colsample_bytree: 0.8
+    n_jobs: -1
+    random_state: 42
+
+output:
+  figures_dir: "H:/Job/solafune/crop-classification-project/project-root/outputs/figures"
+  metrics_dir: "H:/Job/solafune/crop-classification-project/project-root/outputs/metrics"
+  predictions_dir: "H:/Job/solafune/crop-classification-project/project-root/outputs/predictions"
+  model_dir: "H:/Job/solafune/crop-classification-project/project-root/outputs/models"

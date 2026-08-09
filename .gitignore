@@ -1,0 +1,19 @@
+# Data (never commit — see README.md for placement instructions)
+data/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.egg-info/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Large model artifacts (see README.md Section 8 re: Git LFS / external hosting)
+outputs/models/*.joblib
+!outputs/models/.gitkeep
+
+# OS
+.DS_Store
