@@ -188,7 +188,7 @@ etc.). Headline items:
 ## 9. Repository structure
 
 ```
-project-root/
+crop-classification-ml-project/
 └── configs/
     └── config.yaml
 ├── notebooks/
