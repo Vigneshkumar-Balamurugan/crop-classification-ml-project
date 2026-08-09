@@ -3,6 +3,10 @@
 A reproducible pipeline for pixel-level crop-type classification on a
 PASTIS-derived subset of Sentinel-2 imagery.
 
+Here is the model performance for one case:
+
+![Model Performance](/outputs/figures/qualitative_test_30123_xgboost.png)
+
 ## 1. Project overview
 
 Given per-patch Sentinel-2 time series (`(T, 10, H, W)`) and matching
