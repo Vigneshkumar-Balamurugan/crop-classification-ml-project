@@ -35,7 +35,7 @@ segmentation model for several reasons:
   and in the original PASTIS-adjacent benchmarks, before reaching for
   spatio-temporal deep models.
 - **Interpretability.** `clf.feature_importances_` (saved to
-  `.../outputs/metrics/feature_importances.json`) directly shows which
+  `outputs/metrics/feature_importances.json`) directly shows which
   band/statistic combinations drive class separability — useful both
   for sanity-checking the model and for guiding future feature
   engineering (e.g. adding vegetation indices).
@@ -60,7 +60,7 @@ further as a recommended next step in Section 4.
 The split is **patch-level**, not pixel-level: patches are randomly
 assigned wholesale to train (70%) / val (15%) / test (15%) using a
 fixed seed (`configs/config.yaml` -> `split.seed`), and the resulting
-patch-ID lists are persisted to `.../outputs/splits/{train,val,test}.txt`
+patch-ID lists are persisted to `outputs/splits/{train,val,test}.txt`
 so the split is exactly reproducible from those files alone. Splitting
 by pixel instead would leak information: neighbouring pixels within
 the same field are highly spatially autocorrelated, so a pixel-level
@@ -72,12 +72,12 @@ during training and overstate generalization performance.
 - **Dataset size**: 102 number of usable patches (paired S2 + annotation),
   from `src.data_loading.list_patch_ids`.
 - **Patch dimensions & temporal depth**: Each patch has dimensions of 128 (`H`), 128 (`W`), with
-  46 number of observations `T` (`.../outputs/metrics/patch_summary.csv`).
+  46 number of observations `T` (`outputs/metrics/patch_summary.csv`).
 - **Class distribution**: `outputs/figures/class_distribution.png`
   shows a clear imbalance among the different land-cover classes in the PASTIS dataset. Background pixels constitute the largest proportion of the dataset (506141 pixels), followed by Meadow (296576), Soft Winter Wheat (199108), Corn (196704), and Void Label (144087). In contrast, several classes are highly underrepresented, particularly Orchard (75 pixels), and Potatoes (158). Notably, the Beet class has no pixels in the provided results, indicating that this class is absent from the analyzed data. 
 - **Example imagery**: RGB composites are available in 
-  `.../outputs/figures/Patch_*_RGB_median_composite*.png`, with the corresponding class labels shown in `Patch_*_labels.png`.
-- **AOI extent**:  `.../outputs/figures/aoi_extent.png` shows the approximate geographic
+  `outputs/figures/Patch_*_RGB_median_composite*.png`, with the corresponding class labels shown in `Patch_*_labels.png`.
+- **AOI extent**:  `outputs/figures/aoi_extent.png` shows the approximate geographic
   footprint of the patches — note the total extent and describe
   qualitatively (e.g. contiguous vs. scattered tiles).
 
@@ -117,12 +117,12 @@ low recall — the model has too little signal to learn their spectral-
 temporal signature confidently, and `class_weight="balanced_subsample"`
 (in RF model) only partially compensates (it reweights the loss but cannot
 manufacture missing examples). Where per-class IoU in
-`.../outputs/metrics/metrics_test.json` is very low or `NaN` for a class,
-check `.../outputs/metrics/class_pixel_counts.csv` first — it is often
+`outputs/metrics/metrics_test.json` is very low or `NaN` for a class,
+check `outputs/metrics/class_pixel_counts.csv` first — it is often
 simply a low-sample-size class rather than a fundamentally
 inseparable one.
 
-### Effects of resolution, cloud contamination, missing observations, seasonal timing
+### Effects of cloud contamination, missing observations, seasonal timing
 
 Missing or cloud-contaminated observations reduce the effective `T` used per pixel; patches with
 few valid observations concentrated outside the crop's discriminative
